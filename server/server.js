@@ -11,38 +11,26 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server);
 
+const { generateMessage } = require('./utils/message');
+
 app.use(express.static(publicPath));
 
 io.on('connection', (socket) => {
   log('New user connected');
 
 // socket.emit from Admin text Welcom to the chat app
-  socket.emit('newMessage', {
-    from: 'Admin',
-    text: 'Welcome to the chat app',
-    createdAt: new Date().getTime()
-  });
+  let message = generateMessage('Admin', 'Welcome to the chat app');
+  socket.emit('newMessage', message);
 
   // socket.broadcast.emit from Admin text New user joined
-  socket.broadcast.emit('newMessage', {
-    from: 'Admin',
-    text: 'New user joined',
-    createAt: new Date().getTime()
-  });
+  message = generateMessage('Admin', 'New user joined');
+  socket.broadcast.emit('newMessage',message);
 
   socket.on('createMessage', (msg) => {
-    log('createMessage', msg);
-    io.emit('newMessage', {
-      from: msg.from,
-      text: msg.text,
-      createdAt: new Date().getTime()
-    });
+    message = generateMessage(msg.from, msg.text);
+    // io.emit('newMessage',message);
 
-    // socket.broadcast.emit('newMessage', {
-    //   from: msg.from,
-    //   text: msg.text,
-    //   createAt: new Date().getTime()
-    // });
+    socket.broadcast.emit('newMessage',message);
   })
 
   socket.on('disconnect', () => {
