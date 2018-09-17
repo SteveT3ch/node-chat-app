@@ -8,6 +8,7 @@
   <title>node-chat-app</title>
   <!--<link rel="stylesheet" href="/css/libs/bootstrap.min.css"> -->
   <link rel="stylesheet" href="/css/master.css">
+  <link rel="stylesheet" href="/css/custom.css">
 </head>
 <body class="chat">
     <div class="chat__sidebar">
@@ -28,7 +29,7 @@
     <script id='message-template' type='text/template'>
       <li class="message">
         <div class="message__title">
-          <h4>{{from}}</h4>
+          <h4 id="message__from">{{from}}</h4>
           <span>{{createAt}}</span>
         </div>
         <div class="message__body">
@@ -53,6 +54,7 @@
   <!--<script src="/js/libs/bootstrap.min.js"></script> -->
   <script src="/js/libs/moment.js"></script>
   <script src="/js/libs/mustache.js"></script>
+  <script src="/js/libs/deparam.js"></script>
   <script src="/js/chat.js"></script>
 </body>
 

@@ -1,3 +1,4 @@
+const {log} = console;
 const socket = io();
 
 function scrollToBottom () {
@@ -14,17 +15,38 @@ function scrollToBottom () {
   let lastMessageHeight = newMessage.prev().innerHeight();
 
   if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight ) {
-    console.log('Should scroll');
+    log('Should scroll');
     messages.scrollTop(scrollHeight);
   }
 }
 
 socket.on('connect', function () {
-  console.log('connected to server');
+  log('connected to server');
+  let params = $.deparam(window.location.search);
+
+  socket.emit('join', params, function (err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('No error');
+    }
+  });
 });
 
 socket.on('disconnect', function () {
   console.log('Disconnect from server');
+});
+
+socket.on('updateUserList', function(users) {
+  log('Users List', users);
+  let ol = $('<ol></ol>');
+
+  users.map(function(user){
+    ol.append($('<li></li>').text(user));
+  });
+
+  $('#users').html(ol);
 });
 
 socket.on('newMessage', function (message) {

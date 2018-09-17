@@ -11,7 +11,6 @@ const moment = require('moment');
 // how to use the createdAt timestamp
 //const createdAt = 123;
 let createdAt = moment().valueOf();
-
 log(createdAt);
 
 let now = moment(createdAt);
